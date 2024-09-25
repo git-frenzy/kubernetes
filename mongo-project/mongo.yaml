@@ -15,6 +15,14 @@ spec:
       containers:
       - name: mongo
         image: mongo:latest
+        volumeMounts:
+          volumePath: /data/db
+          name: mongo-vol
+
+      volumes:
+        - name: mongo-vol
+          persistentVolumeClaim
+            claimName: host-pvc
 
 
 ---
