@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: database
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: mongo
@@ -16,17 +16,15 @@ spec:
       - name: mongo
         image: mongo:latest
         volumeMounts:
-          volumePath: /data/db
-          name: mongo-vol
+          - mountPath: /data/db
+            name: mongo-vol
 
       volumes:
         - name: mongo-vol
-          persistentVolumeClaim
+          persistentVolumeClaim:
             claimName: host-pvc
 
-
 ---
-
 
 kind: Service
 apiVersion: v1
@@ -39,7 +37,3 @@ spec:
       targetPort: 27017
   selector:
     app: mongo
-
-
-#  kubectl apply -f deploy-dbapp.yaml
-#  minikube service service-app      
