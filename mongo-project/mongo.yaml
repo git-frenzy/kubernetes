@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:latest
+
+
+---
+
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: service-database
+spec:
+  ports:
+    - name: tcp
+      port: 27017
+      targetPort: 27017
+  selector:
+    app: mongo
+
+
+#  kubectl apply -f deploy-dbapp.yaml
+#  minikube service service-app      
